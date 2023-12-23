@@ -68,6 +68,9 @@ class Dinosaur:
     def draw(self, SCREEN):
         SCREEN.blit(self.image, (self.rect.x, self.rect.y))
         pygame.draw.rect(SCREEN, self.color, (self.rect.x, self.rect.y, self.rect.width, self.rect.height), 2)
+        for obstacle in obstacles:
+            pygame.draw.line(SCREEN, self.color, (self.rect.x + 54, self.rect.y + 12), obstacle.rect.center, 2)
+
 
 class Obstacle:
     def __init__(self, image, number_of_cacti):
