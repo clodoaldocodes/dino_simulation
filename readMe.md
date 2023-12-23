@@ -23,8 +23,8 @@ python3 -m pip install -U neat-python==0.92 --user
 
 # References to read if you would like
 
-[^1] [Evolving Neural Networks through
+[^1]: [Evolving Neural Networks through
 Augmenting Topologies - Paper](https://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf)
 
 
-[^2] [NEAT-Python’s documentation](https://neat-python.readthedocs.io/en/latest/)
+[^2]: [NEAT-Python’s documentation](https://neat-python.readthedocs.io/en/latest/)
