@@ -96,18 +96,24 @@ def remove(index):
     
 
 def eval_genomes(genomes, config):
-    global game_speed, x_pos_bg, y_pos_bg, points, obstacles, dinosaurs
+    global game_speed, x_pos_bg, y_pos_bg, points, ge, nets, obstacles, dinosaurs
     clock = pygame.time.Clock()
     points = 0
 
     obstacles = []
     dinosaurs = []
     ge = []
-    
+    nets = []
 
     x_pos_bg = 0
     y_pos_bg = 380
     game_speed = 20
+
+    for genome_id, genome in genomes:
+        dinosaurs.append(Dinosaur())
+        ge.append(genome)
+        net = neat.nn.FeedForwardNetwork.create(genome, config)
+        nets.append(net)
 
     def score():
         global points, game_speed
