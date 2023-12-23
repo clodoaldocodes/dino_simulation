@@ -3,6 +3,7 @@ import os
 import random
 import sys
 import neat
+import math
 
 pygame.init()
 
@@ -93,7 +94,13 @@ class LargeCactus(Obstacle):
 
 def remove(index):
     dinosaurs.pop(index)
-    
+    ge.pop(index)
+    nets.pop(index)
+
+def distance(pos_a, pos_b):
+    dx = pos_a[0] - pos_b[0]
+    dy = pos_a[1] - pos_b[1]
+    return math.sqrt(dx**2+dy**2)
 
 def eval_genomes(genomes, config):
     global game_speed, x_pos_bg, y_pos_bg, points, ge, nets, obstacles, dinosaurs
@@ -114,6 +121,7 @@ def eval_genomes(genomes, config):
         ge.append(genome)
         net = neat.nn.FeedForwardNetwork.create(genome, config)
         nets.append(net)
+        genome.fitness = 0
 
     def score():
         global points, game_speed
@@ -160,12 +168,16 @@ def eval_genomes(genomes, config):
             obstacle.update()
             for i, dinosaur in enumerate(dinosaurs):
                 if dinosaur.rect.colliderect(obstacle.rect):
+                    ge[i].fitness -= 1
                     remove(i)
 
-        user_input = pygame.key.get_pressed()
+        #user_input = pygame.key.get_pressed()
 
         for i, dinosaur in enumerate(dinosaurs):
-            if user_input[pygame.K_SPACE]:
+            output = nets[i].activate((dinosaur.rect.y,
+                                       distance((dinosaur.rect.x, dinosaur.rect.y),
+                                               obstacle.rect.midtop)))
+            if output[0] > 0.5 and dinosaur.rect.y == dinosaur.Y_POS:
                 dinosaur.dino_jump = True
                 dinosaur.dino_run = False
 
