@@ -1,5 +1,6 @@
 import pygame
 import os
+import random
 
 pygame.init()
 
@@ -24,7 +25,7 @@ LARGE_CARTUS = [pygame.image.load(os.path.join("D:\dino_simulation\Assets\Cactus
 BIRD = [pygame.image.load(os.path.join("D:\dino_simulation\Assets\Bird", "Bird1.png")),
            pygame.image.load(os.path.join("D:\dino_simulation\Assets\Bird", "Bird2.png"))]
 
-CLOUD = [pygame.image.load(os.path.join("D:\dino_simulation\Assets\Other", "Cloud.png"))]
+CLOUD = pygame.image.load(os.path.join("D:\dino_simulation\Assets\Other", "Cloud.png"))
 
 BG = [pygame.image.load(os.path.join("D:\dino_simulation\Assets\Other", "Track.png"))]
 
@@ -100,10 +101,34 @@ class Dinosaur:
     def draw(self, SCREEN):
         SCREEN.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
 
+class Cloud:
+    def __init__(self):
+        self.x = SCREEN_WIDTH + random.randint(800, 1000)
+        self.y = random.randint(50, 100)
+        self.image = CLOUD
+        self.width = self.image.get_width()
+
+    def update(self):
+        self.x -= game_speed
+        if self.x < -self.width:
+            self.x = SCREEN_WIDTH + random.randint(2500, 3000)
+            self.y = random.randint(50, 100)
+
+    def draw(self, SCREEN):
+        SCREEN.blit(self.image, (self.x, self.y))
+
 def main():
+    global game_speed, x_pos_bg, y_pos_bg
     run = True
     clock = pygame.time.Clock()
     player = Dinosaur()
+    cloud = Cloud()
+    game_speed = 14
+
+    x_pos_bg =  0
+    y_pos_bg = 380
+
+    def background():
 
     while run:
         for event in pygame.event.get():
@@ -115,6 +140,9 @@ def main():
 
         player.draw(SCREEN)
         player.update(userInput)
+
+        cloud.draw(SCREEN)
+        cloud.update()
 
         clock.tick(30)
         pygame.display.update()
