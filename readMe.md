@@ -1,6 +1,6 @@
 # Python Implementation of the Browser Dinosaur Game
 
-This project was developed exclusively for the purpose of exploring the application of the pygame library in creating simulations and implementing models based on reinforcement learning.
+This project was developed exclusively for the purpose of exploring the application of the pygame library in creating simulations and implementing models based on reinforcement learning [^1] [^2].
 
 The implementation adopts a learning approach based on genetic evolution, and the configuration files meticulously describe each of the architectures employed. While the source files are provided for reference, it's essential to note that minimal alterations were made, primarily adjusting the number of outputs and hidden layers to shape the dinosaurs' behavior.
 
