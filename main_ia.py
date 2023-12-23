@@ -13,6 +13,14 @@ RUNNING = [pygame.image.load(os.path.join("D:\dino_simulation\Assets\Dino", "Din
            pygame.image.load(os.path.join("D:\dino_simulation\Assets\Dino", "DinoRun2.png"))]
 JUMPING = pygame.image.load(os.path.join("D:\dino_simulation\Assets\Dino", "DinoJump.png"))
 
+SMALL_CACTUS = [pygame.image.load(os.path.join("D:\dino_simulation\Assets\Cactus", "SmallCactus1.png")),
+           pygame.image.load(os.path.join("D:\dino_simulation\Assets\Cactus", "SmallCactus2.png")),
+           pygame.image.load(os.path.join("D:\dino_simulation\Assets\Cactus", "SmallCactus3.png"))]
+
+LARGE_CARTUS = [pygame.image.load(os.path.join("D:\dino_simulation\Assets\Cactus", "LargeCactus1.png")),
+           pygame.image.load(os.path.join("D:\dino_simulation\Assets\Cactus", "LargeCactus2.png")),
+           pygame.image.load(os.path.join("D:\dino_simulation\Assets\Cactus", "LargeCactus3.png"))]
+
 BG = pygame.image.load(os.path.join("D:\dino_simulation\Assets\Other", "Track.png"))
 
 FONT = pygame.font.Font("freesansbold.ttf", 20)
@@ -57,11 +65,41 @@ class Dinosaur:
     def draw(self, SCREEN):
         SCREEN.blit(self.image, (self.rect.x, self.rect.y))
 
+class Obstacle:
+    def __init__(self, image, number_of_cacti):
+       self.image = image
+       self.type = number_of_cacti
+       self.rect = self.image[self.type].get_rect()
+       self.rect.x = SCREEN_WIDTH
+
+    def update(self):
+        self.rect.x -= game_speed
+        if self.rect.x < -self.rect.width:
+            obstacles.pop()
+
+    def draw(self, SCREEN):
+        SCREEN.blit(self.image[self.type], self.rect)
+
+class SmallCactus(Obstacle):
+    def __init__(self, image, number_of_cacti):
+        super().__init__(image, number_of_cacti)
+        self.rect.y = 325
+
+class LargeCactus(Obstacle):
+    def __init__(self, image, number_of_cacti):
+        super().__init__(image, number_of_cacti)
+        self.rect.y = 300       
+
+def remove(index):
+    dinosaurs.pop(index)
+    
+
 def main():
-    global game_speed, x_pos_bg, y_pos_bg, points
+    global game_speed, x_pos_bg, y_pos_bg, points, obstacles, dinosaurs
     clock = pygame.time.Clock()
     points = 0
 
+    obstacles = []
     dinosaurs = [Dinosaur()]
 
     x_pos_bg = 0
@@ -98,12 +136,32 @@ def main():
             dinosaur.update()
             dinosaur.draw(SCREEN)
 
+        if len(dinosaurs) == 0:
+            break
+
+        if len(obstacles) == 0:
+            rand_int = random.randint(0, 1)
+            if rand_int == 0:
+                obstacles.append(SmallCactus(SMALL_CACTUS, random.randint(0, 2)))
+            elif rand_int == 1:
+                obstacles.append(LargeCactus(LARGE_CARTUS, random.randint(0, 2)))
+
+        for obstacle in obstacles:
+            obstacle.draw(SCREEN)
+            obstacle.update()
+            for i, dinosaur in enumerate(dinosaurs):
+                if dinosaur.rect.colliderect(obstacle.rect):
+                    remove(i)
+
         user_input = pygame.key.get_pressed()
 
         for i, dinosaur in enumerate(dinosaurs):
             if user_input[pygame.K_SPACE]:
                 dinosaur.dino_jump = True
                 dinosaur.dino_run = False
+
+        score()
+        background()
 
         clock.tick(30)
         pygame.display.update()
