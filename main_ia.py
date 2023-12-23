@@ -38,6 +38,7 @@ class Dinosaur:
         self.dino_jump = False
         self.jump_vel = self.JUMP_VEL
         self.rect = pygame.Rect(self.X_POS, self.Y_POS, img.get_width(), img.get_height())
+        self.color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         self.step_index = 0
 
     def update(self):
@@ -66,6 +67,7 @@ class Dinosaur:
 
     def draw(self, SCREEN):
         SCREEN.blit(self.image, (self.rect.x, self.rect.y))
+        pygame.draw.rect(SCREEN, self.color, self.rect.x, self.rect.y, self.rect.width, self.rect.height)
 
 class Obstacle:
     def __init__(self, image, number_of_cacti):
