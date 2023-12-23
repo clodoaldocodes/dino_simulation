@@ -16,7 +16,13 @@ These codes draw inspiration from a series of instructional videos on YouTube, c
 * By pursuing these suggestions, we aim to deepen the educational value and performance capabilities of this browser dinosaur game implementation.
 
 # Code to install the libraries 
-'''
+```
 python3 -m pip install -U pygame --user
 python3 -m pip install -U neat-python==0.92 --user
-'''
+```
+
+# References to read if you would like
+
+[^1] [Evolving Neural Networks through
+Augmenting Topologies - Paper](https://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf)
+[^2] [NEAT-Python’s documentation](https://neat-python.readthedocs.io/en/latest/)
