@@ -58,6 +58,19 @@ class Dinosaur:
         if self.step_index >= 10:
             self.step_index = 0
 
+        if userInput[pygame.K_UP] and not self.dino_jump:
+            self.dino_duck = False
+            self.dino_run = False
+            self.dino_jump = True
+        elif userInput[pygame.K_DOWN] and not self.dino_jump:
+            self.dino_duck = True
+            self.dino_run = False
+            self.dino_jump = False
+        elif not (self.dino_jump or userInput[pygame.K_DOWN]):
+            self.dino_duck = False
+            self.dino_run = True
+            self.dino_jump = False
+
 
 def main():
     run = True
