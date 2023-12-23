@@ -31,6 +31,8 @@ BG = [pygame.image.load(os.path.join("D:\dino_simulation\Assets\Other", "Track.p
 class Dinosaur:
     X_POS = 80
     Y_POS = 310
+    Y_POS_DUCK = 340
+    JUMP_VEL = 8.5
 
     def __init__(self):
         self.duck_img = DUCKING
@@ -42,6 +44,7 @@ class Dinosaur:
         self.dino_jump = False
         
         self.step_index = 0
+        self.jump_vel = self.JUMP_VEL
         self.image = self.run_img[0]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
@@ -72,7 +75,11 @@ class Dinosaur:
             self.dino_jump = False
     
     def duck(self):
-        pass
+        self.image = self.duck_img[self.step_index // 5]
+        self.dino_rect = self.image.get_rect()
+        self.dino_rect.x = self.X_POS
+        self.dino_rect.y = self.Y_POS_DUCK
+        self.step_index += 1
     
     def run(self):
         self.image = self.run_img[self.step_index // 5]
@@ -82,7 +89,13 @@ class Dinosaur:
         self.step_index += 1
 
     def jump(self):
-        pass
+        self.image = self.jump_img[0]
+        if self.dino_jump:
+            self.dino_rect.y -= self.jump_vel * 4
+            self.jump_vel -= 0.8
+        if self.jump_vel < - self.JUMP_VEL:
+            self.dino_jump = False
+            self.jump_vel = self.JUMP_VEL
     
     def draw(self, SCREEN):
         SCREEN.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
