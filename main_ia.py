@@ -2,6 +2,7 @@ import pygame
 import os 
 import random
 import sys
+import neat
 
 pygame.init()
 
@@ -94,13 +95,15 @@ def remove(index):
     dinosaurs.pop(index)
     
 
-def main():
+def eval_genomes(genomes, config):
     global game_speed, x_pos_bg, y_pos_bg, points, obstacles, dinosaurs
     clock = pygame.time.Clock()
     points = 0
 
     obstacles = []
-    dinosaurs = [Dinosaur()]
+    dinosaurs = []
+    ge = []
+    
 
     x_pos_bg = 0
     y_pos_bg = 380
@@ -166,4 +169,20 @@ def main():
         clock.tick(30)
         pygame.display.update()
 
-main()
+
+def run (config_path):
+    config = neat.config.Config(
+        neat.DefaultGenome,
+        neat.DefaultReproduction,
+        neat.DefaultSpeciesSet,
+        neat.DefaultStagnation,  
+        config_path 
+    )
+
+    pop = neat.Population(config)
+    pop.run(eval_genomes, 50)
+
+if __name__ == "__main__":
+    local_dir = os.path.dirname(__file__)
+    config_path = os.path.join(local_dir, "config.txt")
+    run(config_path)
