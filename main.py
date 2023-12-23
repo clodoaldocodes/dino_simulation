@@ -10,7 +10,7 @@ SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 RUNNING = [pygame.image.load(os.path.join("D:\dino_simulation\Assets\Dino", "DinoRun1.png")),
            pygame.image.load(os.path.join("D:\dino_simulation\Assets\Dino", "DinoRun2.png"))]
 JUMPING = [pygame.image.load(os.path.join("D:\dino_simulation\Assets\Dino", "DinoJump.png"))]
-DUCKING = [pygame.image.load(os.path.join("D:\dino_simulation\Assets\Dino", "DinoDucki1.png")),
+DUCKING = [pygame.image.load(os.path.join("D:\dino_simulation\Assets\Dino", "DinoDuck1.png")),
            pygame.image.load(os.path.join("D:\dino_simulation\Assets\Dino", "DinoDuck2.png"))]
 
 SMALL_CACTUS = [pygame.image.load(os.path.join("D:\dino_simulation\Assets\Cactus", "SmallCactus1.png")),
@@ -44,16 +44,16 @@ class Dinosaur:
         self.step_index = 0
         self.image = self.run_img[0]
         self.dino_rect = self.image.get_rect()
-        self.dinp_rect.x = self.X_POS
+        self.dino_rect.x = self.X_POS
         self.dino_rect.y = self.Y_POS
 
     def update(self, userInput):
         if self.dino_duck:
-            self.dino_duck()
+            self.duck()
         if self.dino_run:
-            self.dino_run()
+            self.run()
         if self.dino_jump:
-            self.dino_jump()
+            self.jump()
 
         if self.step_index >= 10:
             self.step_index = 0
@@ -70,7 +70,22 @@ class Dinosaur:
             self.dino_duck = False
             self.dino_run = True
             self.dino_jump = False
+    
+    def duck(self):
+        pass
+    
+    def run(self):
+        self.image = self.run_img[self.step_index // 5]
+        self.dino_rect = self.image.get_rect()
+        self.dino_rect.x = self.X_POS
+        self.dino_rect.y = self.Y_POS
+        self.step_index += 1
 
+    def jump(self):
+        pass
+    
+    def draw(self, SCREEN):
+        SCREEN.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
 
 def main():
     run = True
@@ -82,13 +97,13 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
 
-    SCREEN.fill((255,255,255))
-    userInput = pygame.key.get_pressed()
+        SCREEN.fill((255,255,255))
+        userInput = pygame.key.get_pressed()
 
-    player.draw(SCREEN)
-    player.update(userInput)
+        player.draw(SCREEN)
+        player.update(userInput)
 
-    clock.tick(30)
-    pygame.display.update()
+        clock.tick(30)
+        pygame.display.update()
 
 main()
